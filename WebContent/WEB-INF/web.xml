@@ -16,7 +16,7 @@
 		<url-pattern>/MyFirstServlet</url-pattern>
 	</servlet-mapping>
 	<listener>
-		<listener-class>com.user.util.ContextListener</listener-class>
+		<listener-class>com.zm.qurzt.ContextListener</listener-class>
 	</listener>
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
