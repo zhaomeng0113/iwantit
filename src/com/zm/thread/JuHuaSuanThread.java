@@ -78,7 +78,7 @@ public class JuHuaSuanThread extends Thread{
 										if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
 										}else{
-											String sendInfo2 = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"免单红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
+											String sendInfo2 = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
 											logger.info("二次邮件发送状态"+sendInfo2);
 										}
 									} catch (Exception e) {
@@ -111,7 +111,7 @@ public class JuHuaSuanThread extends Thread{
 										if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
 										}else{
-											String sendInfo2 = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"免单红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
+											String sendInfo2 = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
 											logger.info("二次邮件发送状态"+sendInfo2);
 										}
 									} catch (Exception e) {

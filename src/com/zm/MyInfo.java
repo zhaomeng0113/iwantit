@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zm.utils.HttpClientUtils;
+import com.zm.utils.HttpUtil;
 
 public class MyInfo {
 	//邮件接收者（数组）
@@ -36,7 +37,7 @@ public class MyInfo {
 		sendMap.put("resp_email_id", "true");
 		//String url="http://www.sendcloud.net/webapi/mail.send.json?api_user="+MyInfo.APIUSER+"&api_key="+MyInfo.APIKEY+"&from="+FORM+"&to="+MyInfo.SENDTOSTRING+"&subject="+subject+"&html="+content+"&resp_email_id=true";
 		//url=URLEncoder.encode(url, "UTF-8");
-		String sendHttpPost = HttpClientUtils.sendHttpPost("http://www.sendcloud.net/webapi/mail.send.json", sendMap);
+		String sendHttpPost = HttpUtil.sendPost("http://www.sendcloud.net/webapi/mail.send.json", sendMap,"UTF-8");
 		JSONObject msg = (JSONObject) JSONObject.parse(sendHttpPost);
 		return msg.getString("message");
 	}
