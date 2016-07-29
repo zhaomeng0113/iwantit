@@ -306,7 +306,7 @@ public class HttpClientUtils {
 
         try {
             HttpEntity entity = response.getEntity();
-            return EntityUtils.toString(entity, Consts.UTF_8);
+            return EntityUtils.toString(entity,"UTF-8");
         } finally {
             response.close();
         }
