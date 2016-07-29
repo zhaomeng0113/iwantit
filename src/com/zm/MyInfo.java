@@ -4,11 +4,17 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSONObject;
+import com.zm.thread.JuHuaSuanThread;
 import com.zm.utils.HttpClientUtils;
 import com.zm.utils.HttpUtil;
 
 public class MyInfo {
+	
+	private static Logger logger=Logger.getLogger(MyInfo.class);
+	
 	//邮件接收者（数组）
 	public static final String[] SENDTOARRAY={""};
 	//邮件接受者（String类型，以";"号分隔）
@@ -39,6 +45,7 @@ public class MyInfo {
 		//url=URLEncoder.encode(url, "UTF-8");
 		String sendHttpPost = HttpUtil.sendPost("http://www.sendcloud.net/webapi/mail.send.json", sendMap,"UTF-8");
 		JSONObject msg = (JSONObject) JSONObject.parse(sendHttpPost);
-		return msg.getString("message");
+		String message = msg.getString("message");
+		return message;
 	}
 }

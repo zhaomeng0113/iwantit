@@ -77,9 +77,6 @@ public class JuHuaSuanThread extends Thread{
 										logger.info("邮件发送返回状态为:"+sendInfo);
 										if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
-										}else{
-											String sendInfo2 = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
-											logger.info("二次邮件发送状态"+sendInfo2);
 										}
 									} catch (Exception e) {
 										logger.info("！！！！！！！！！！！！！！邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
@@ -99,7 +96,7 @@ public class JuHuaSuanThread extends Thread{
 						//获取活动商品名称
 						String currentGoodsName = (String) ((JSONObject) currentData.get("baseInfo")).get("brandName");
 						//判断是否免单
-						if(currentGoodsName.contains("润微")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("骆驼")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
+						if(currentGoodsName.contains("曼妮芬")||currentGoodsName.contains("润微")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("骆驼")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
 							if(!flowAct.getEmpty()){
 								Object mcVal = mc.get(flowAct.getFlowId()+"");
 								logger.info("memcached获取值："+mcVal);
@@ -110,9 +107,6 @@ public class JuHuaSuanThread extends Thread{
 										logger.info("邮件发送返回状态为:"+sendInfo);
 										if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
-										}else{
-											String sendInfo2 = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
-											logger.info("二次邮件发送状态"+sendInfo2);
 										}
 									} catch (Exception e) {
 										logger.info("！！！！！！！！！！！！！！邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
