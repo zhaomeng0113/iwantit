@@ -23,8 +23,6 @@ public class JuHuaSuanThread extends Thread{
 
 	public void run() {
 		//获取memcached客户端
-		MemcachedCilentUtil m=new MemcachedCilentUtil();
-		MemcachedClient mc = m.getClient();
 		String juHuaSuan = null;
 		try {
 			juHuaSuan = HttpClientUtils.sendHttpsGet("https://ju.taobao.com/json/jusp2/ajaxGetTpFloor.json?urlKey=other/qhb&floorIndex=" + floor + "&subFloorIndex="+subFloor);
@@ -96,7 +94,7 @@ public class JuHuaSuanThread extends Thread{
 						//获取活动商品名称
 						String currentGoodsName = (String) ((JSONObject) currentData.get("baseInfo")).get("brandName");
 						//判断是否免单
-						if(currentGoodsName.contains("润微")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("骆驼")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
+						if(currentGoodsName.contains("润微")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
 							if(!flowAct.getEmpty()){
 								Object mcVal = mc.get(flowAct.getFlowId()+"");
 								logger.info("memcached获取值："+mcVal);
@@ -125,10 +123,11 @@ public class JuHuaSuanThread extends Thread{
 
 	private Integer floor;
 	private Integer subFloor;
+	private MemcachedClient mc;
 
-	public JuHuaSuanThread(Integer floor, Integer subFloor) {
+	public JuHuaSuanThread(Integer floor, Integer subFloor, MemcachedClient mc) {
 		this.floor = floor;
 		this.subFloor = subFloor;
+		this.mc = mc;
 	}
-
 }

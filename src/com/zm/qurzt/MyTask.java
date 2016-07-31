@@ -8,6 +8,9 @@ import java.util.TimerTask;
 import javax.servlet.ServletContext;
 
 import com.zm.thread.JuHuaSuanThread;
+import com.zm.utils.MemcachedCilentUtil;
+
+import net.spy.memcached.MemcachedClient;
 
 
 /** 
@@ -32,9 +35,11 @@ public class MyTask extends TimerTask{
 	@SuppressWarnings("deprecation")
 	public void run() {  
 		if (!isRunning) {  
+			MemcachedCilentUtil memcachedClient=new MemcachedCilentUtil();
+			MemcachedClient mc = memcachedClient.getClient();
 			for(int floor=1;floor<=15;floor++){
 				for(int subFloor=1;subFloor<=2;subFloor++){
-					JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor);
+					JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,mc);
 					j.start();
 				}
 			}

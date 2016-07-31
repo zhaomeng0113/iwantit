@@ -93,11 +93,5 @@ public class TestHttps {
 		}
 	}
 	public static void main(String[] args) {
-		for(int floor=1;floor<=15;floor++){
-			for(int subFloor=1;subFloor<=2;subFloor++){
-				JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor);
-				j.start();
-			}
-		}
 	}
 }
