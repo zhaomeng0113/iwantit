@@ -18,7 +18,7 @@ public class MyInfo {
 	//邮件接收者（数组）
 	public static final String[] SENDTOARRAY={""};
 	//邮件接受者（String类型，以";"号分隔）
-	public static final String SENDTOSTRING="934752820@qq.com";
+	public static final String SENDTOSTRING="934752820@qq.com;543680244@qq.com;499014792@qq.com;cy3306@foxmail.com;527260578@qq.com";
 	public static final String MYMAILFORJUHUASUAN="";
 	public static final String MYMAILFORJUHUASUANPWD="";
 	public static final String MYMAILFORTAOQIANGGOU="";
@@ -41,6 +41,7 @@ public class MyInfo {
 		sendMap.put("html", content);
 		sendMap.put("from", FORM);
 		sendMap.put("resp_email_id", "true");
+		logger.info("邮件内容："+content);
 		//String url="http://www.sendcloud.net/webapi/mail.send.json?api_user="+MyInfo.APIUSER+"&api_key="+MyInfo.APIKEY+"&from="+FORM+"&to="+MyInfo.SENDTOSTRING+"&subject="+subject+"&html="+content+"&resp_email_id=true";
 		//url=URLEncoder.encode(url, "UTF-8");
 		String sendHttpPost = HttpUtil.sendPost("http://www.sendcloud.net/webapi/mail.send.json", sendMap,"UTF-8");

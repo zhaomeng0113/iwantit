@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import javax.servlet.ServletContext;
 
 import com.zm.thread.JuHuaSuanThread;
+import com.zm.thread.TaoQiangGouThread;
 import com.zm.utils.MemcachedCilentUtil;
 
 import net.spy.memcached.MemcachedClient;
@@ -39,9 +40,15 @@ public class MyTask extends TimerTask{
 			MemcachedClient mc = memcachedClient.getClient();
 			for(int floor=1;floor<=15;floor++){
 				for(int subFloor=1;subFloor<=2;subFloor++){
-					JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,mc);
-					j.start();
+					for(int page=1;page<=2;page++){
+						JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,"page%3A"+page,mc);
+						j.start();
+					}
 				}
+			}
+			for(int floor=1;floor<=15;floor++){
+				TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
+				taoQiangGouThread.start();
 			}
 			isRunning = false;  
 			context.log("指定任务执行结束");  

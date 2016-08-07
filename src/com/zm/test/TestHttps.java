@@ -13,9 +13,11 @@ import com.zm.entity.juhuasuan.brandList.BrandList;
 import com.zm.entity.juhuasuan2.JuHuaSuanItem;
 import com.zm.entity.juhuasuan2.itemList.ItemList;
 import com.zm.thread.JuHuaSuanThread;
+import com.zm.thread.TaoQiangGouThread;
 import com.zm.utils.HttpClientUtils;
 import com.zm.utils.JSONUtils;
 import com.zm.utils.JsonMapper;
+import com.zm.utils.MemcachedCilentUtil;
 import com.zm.utils.StringUtils;
 
 public class TestHttps {
@@ -93,5 +95,10 @@ public class TestHttps {
 		}
 	}
 	public static void main(String[] args) {
+		MemcachedCilentUtil m=new MemcachedCilentUtil();
+		for(int floor=1;floor<=15;floor++){
+			TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,m.getClient());
+			taoQiangGouThread.start();
+		}
 	}
 }
