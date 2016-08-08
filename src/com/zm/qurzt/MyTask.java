@@ -39,16 +39,14 @@ public class MyTask extends TimerTask{
 			MemcachedCilentUtil memcachedClient=new MemcachedCilentUtil();
 			MemcachedClient mc = memcachedClient.getClient();
 			for(int floor=1;floor<=15;floor++){
+				TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
+				taoQiangGouThread.start();
 				for(int subFloor=1;subFloor<=2;subFloor++){
 					for(int page=1;page<=2;page++){
 						JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,"page%3A"+page,mc);
 						j.start();
 					}
 				}
-			}
-			for(int floor=1;floor<=15;floor++){
-				TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
-				taoQiangGouThread.start();
 			}
 			isRunning = false;  
 			context.log("指定任务执行结束");  

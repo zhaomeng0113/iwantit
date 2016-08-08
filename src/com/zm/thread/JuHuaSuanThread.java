@@ -61,7 +61,7 @@ public class JuHuaSuanThread extends Thread{
 						//获取活动商品名称
 						String currentGoodsName = (String) ((JSONObject) currentData.get("name")).get("title");
 						//判断是否免单
-						if(currentGoodsPrice>=5&&!(currentGoodsName.contains("搓泥神器"))){
+						if(currentGoodsPrice>=5&&!(currentGoodsName.contains("搓泥神器"))&&!(currentGoodsName.contains("立邦"))){
 							if(flowAct.getPerUserMoney()/100>=currentGoodsPrice||(currentGoodsPrice-flowAct.getPerUserMoney()/100)<=8){
 								logger.info("聚划算红包：【"+currentGoodsName+"】进入免单判断,红包状态为(false为有红包，true代表红包为空)"+flowAct.getEmpty());
 								if(!flowAct.getEmpty()){
@@ -95,7 +95,7 @@ public class JuHuaSuanThread extends Thread{
 						//获取活动商品名称
 						String currentGoodsName = (String) ((JSONObject) currentData.get("baseInfo")).get("brandName");
 						//判断是否免单
-						if(currentGoodsName.contains("润微")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
+						if(currentGoodsName.contains("润微")||currentGoodsName.contains("罗莱")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
 							if(!flowAct.getEmpty()){
 								Object mcVal = mc.get(flowAct.getFlowId()+"");
 								logger.info("memcached获取值："+mcVal);
