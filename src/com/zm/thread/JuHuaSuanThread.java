@@ -20,11 +20,13 @@ public class JuHuaSuanThread extends Thread{
 		Logger logger=Logger.getLogger(JuHuaSuanThread.class);
 		//获取memcached客户端
 		String juHuaSuan = null;
+		String url="";
 		try {
-			String url="https://ju.taobao.com/json/jusp2/ajaxGetTpFloor.json?urlKey=other/qhb&floorIndex=" + floor + "&subFloorIndex="+subFloor+"&ext="+ext;
+			url="https://ju.taobao.com/json/jusp2/ajaxGetTpFloor.json?urlKey=other/qhb&floorIndex=" + floor + "&subFloorIndex="+subFloor+"&ext="+ext;
 			//logger.info(url);
 			juHuaSuan = HttpClientUtils.sendHttpsGet(url);
 		} catch (Exception e) {
+			logger.info("ur地址："+url);
 			logger.info("请求接口数据出错："+e.getMessage());
 		}
 		if(juHuaSuan!=null){
@@ -61,21 +63,30 @@ public class JuHuaSuanThread extends Thread{
 						//获取活动商品名称
 						String currentGoodsName = (String) ((JSONObject) currentData.get("name")).get("title");
 						//判断是否免单
-						if(currentGoodsPrice>=5&&!(currentGoodsName.contains("搓泥神器"))&&!(currentGoodsName.contains("立邦"))){
-							if(flowAct.getPerUserMoney()/100>=currentGoodsPrice||(currentGoodsPrice-flowAct.getPerUserMoney()/100)<=8){
+						if(currentGoodsPrice>=5){
+							if(flowAct.getPerUserMoney()/100>=currentGoodsPrice||(int)((int)currentGoodsPrice-flowAct.getPerUserMoney()/100)<=10){
 								logger.info("聚划算红包：【"+currentGoodsName+"】进入免单判断,红包状态为(false为有红包，true代表红包为空)"+flowAct.getEmpty());
 								if(!flowAct.getEmpty()){
 									Object mcVal = mc.get(flowAct.getFlowId()+"");
 									logger.info("memcached获取值："+mcVal);
 									if(!currentGoodsName.equals(mcVal)){
 										try {
-											logger.info("***********************开始邮件发送****************************");
-											String sendInfo = MyInfo.sendCloud(currentGoodsName,currentGoodsName+"免单红包开始了快去抢<a href=http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+">走你~</a>");
-											logger.info("邮件发送返回状态为:"+sendInfo);
-											if(sendInfo.equals("success")){
-												mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
+											if(currentGoodsName.contains("贴坏包赔")||currentGoodsName.contains("干发帽")){
+												logger.info("忽略免单。。");
+											}else{
+												logger.info("***********************开始短信发送****************************");
+												//"反撸"+(currentGoodsPrice-flowAct.getPerUserMoney()/100)
+												String sendMsg = MyInfo.sendMsg(currentGoodsName, flowAct.getFlowId()+"");
+												logger.info("短信发送状态为："+sendMsg);
+												logger.info("***********************开始邮件发送****************************");
+												String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>           http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
+												logger.info("邮件发送返回状态为:"+sendInfo);
+												//if(sendInfo.equals("success")){
+													mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
+												//}
 											}
 										} catch (Exception e) {
+											e.printStackTrace();
 											logger.info("！！！！！！！！！！！！！！邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
 										}
 
@@ -95,18 +106,26 @@ public class JuHuaSuanThread extends Thread{
 						//获取活动商品名称
 						String currentGoodsName = (String) ((JSONObject) currentData.get("baseInfo")).get("brandName");
 						//判断是否免单
-						if(currentGoodsName.contains("润微")||currentGoodsName.contains("罗莱")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("百雀羚")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
+						if(currentGoodsName.contains("雷士")||currentGoodsName.contains("苏宁")||currentGoodsName.contains("中粮")||currentGoodsName.contains("宝洁")||currentGoodsName.contains("哈比熊")||currentGoodsName.contains("三枪")||currentGoodsName.contains("润微")||currentGoodsName.contains("罗莱")||currentGoodsName.contains("京润珍珠")||currentGoodsName.contains("碧欧泉")||currentGoodsName.contains("兰芝")||currentGoodsName.contains("小虫米子")||currentGoodsName.contains("迪奥")||currentGoodsName.contains("天喔")||currentGoodsName.contains("欧普")){
+							logger.info("***************进入聚划算品牌团红包判断*********"+currentGoodsName);
 							if(!flowAct.getEmpty()){
 								Object mcVal = mc.get(flowAct.getFlowId()+"");
 								logger.info("memcached获取值："+mcVal);
 								if(!currentGoodsName.equals(mcVal)){
 									try {
-										logger.info("***********************开始邮件发送****************************");
-										String sendInfo = MyInfo.sendCloud(currentGoodsName, currentGoodsName+"免单红包开始了快去抢<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>走你~</a>");
-										logger.info("邮件发送返回状态为:"+sendInfo);
-										if(sendInfo.equals("success")){
-											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
+										try {
+											String sendMsg = MyInfo.sendMsg(currentGoodsName, flowAct.getFlowId()+"");
+											logger.info("短信发送状态为："+sendMsg);
+										} catch (Exception e) {
+											e.printStackTrace();
+											logger.info("短信发送出错,reason："+e.getMessage());
 										}
+										logger.info("***********************开始邮件发送****************************");
+										String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>           http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
+										logger.info("邮件发送返回状态为:"+sendInfo);	
+										//if(sendInfo.equals("success")){
+											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
+										//}
 									} catch (Exception e) {
 										logger.info("！！！！！！！！！！！！！！邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
 									}
@@ -116,7 +135,7 @@ public class JuHuaSuanThread extends Thread{
 					}
 				}
 			}else{
-				logger.info("未获取到任何数据");
+				logger.info("未获取到任何数据"+juHuaSuan);
 			}
 		}
 	}

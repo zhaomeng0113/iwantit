@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.zm.MyInfo;
 import com.zm.entity.juhuasuan.JuHuaSuanBrand;
 import com.zm.entity.juhuasuan.brandList.BrandList;
 import com.zm.entity.juhuasuan2.JuHuaSuanItem;
@@ -95,10 +96,6 @@ public class TestHttps {
 		}
 	}
 	public static void main(String[] args) {
-		MemcachedCilentUtil m=new MemcachedCilentUtil();
-		for(int floor=1;floor<=15;floor++){
-			TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,m.getClient());
-			taoQiangGouThread.start();
-		}
+		MyInfo.sendMsg("大飒飒范德萨发的是的撒啊大厦法定","测试邮件地方萨芬撒范德萨发发大水发大水发大水发大水发撒发顺丰","123132123");
 	}
 }

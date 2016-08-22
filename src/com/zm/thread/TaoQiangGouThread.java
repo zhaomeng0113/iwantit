@@ -55,19 +55,21 @@ public class TaoQiangGouThread extends Thread{
 					String currentGoodsName = (String) ((JSONObject) currentData.get("name")).get("title");
 					//判断是否免单
 					if(currentGoodsPrice>=5){
-						if(flowAct.getPerUserMoney()/100>=currentGoodsPrice||(currentGoodsPrice-flowAct.getPerUserMoney()/100)<=8){
+						if(flowAct.getPerUserMoney()/100>=currentGoodsPrice||(currentGoodsPrice-flowAct.getPerUserMoney()/100)<=10){
 							logger.info("淘抢购红包：【"+currentGoodsName+"】进入免单判断,红包状态为(false为有红包，true代表红包为空)"+flowAct.getEmpty());
 							if(!flowAct.getEmpty()){
 								Object mcVal = mc.get(flowAct.getFlowId()+"");
 								logger.info("memcached获取值："+mcVal);
 								if(!currentGoodsName.equals(mcVal)){
 									try {
+										String sendMsg = MyInfo.sendMsg(currentGoodsName, flowAct.getFlowId()+"");
+										logger.info("短信发送状态为："+sendMsg);
 										logger.info("***********************开始邮件发送****************************");
-										String sendInfo = MyInfo.sendCloud(currentGoodsName,currentGoodsName+"免单红包开始了快去抢<a href=http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+">走你~</a>");
+										String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>          http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
 										logger.info("邮件发送返回状态为:"+sendInfo);
-										if(sendInfo.equals("success")){
+										//if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
-										}
+										//}
 									} catch (Exception e) {
 										logger.info("！！！！！！！！！！！！！！淘抢购邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
 									}

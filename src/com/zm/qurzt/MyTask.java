@@ -35,24 +35,31 @@ public class MyTask extends TimerTask{
 
 	@SuppressWarnings("deprecation")
 	public void run() {  
-		if (!isRunning) {  
-			MemcachedCilentUtil memcachedClient=new MemcachedCilentUtil();
-			MemcachedClient mc = memcachedClient.getClient();
-			for(int floor=1;floor<=15;floor++){
-				TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
-				taoQiangGouThread.start();
-				for(int subFloor=1;subFloor<=2;subFloor++){
-					for(int page=1;page<=2;page++){
-						JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,"page%3A"+page,mc);
-						j.start();
+		Date date = new Date();
+		int hours = date.getHours();
+		System.out.println(hours);
+		if(hours>=1&&hours<8){
+
+		}else{
+			if (!isRunning) {  
+				MemcachedCilentUtil memcachedClient=new MemcachedCilentUtil();
+				MemcachedClient mc = memcachedClient.getClient();
+				for(int floor=1;floor<=15;floor++){
+					/*TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
+					taoQiangGouThread.start();*/
+					for(int subFloor=1;subFloor<=2;subFloor++){
+						for(int page=1;page<=2;page++){
+							JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,"page%3A"+page,mc);
+							j.start();
+						}
 					}
 				}
-			}
-			isRunning = false;  
-			context.log("指定任务执行结束");  
-		} else {  
-			context.log("上一次任务执行还未结束");  
-		}  
+				isRunning = false;  
+				context.log("指定任务执行结束");  
+			} else {  
+				context.log("上一次任务执行还未结束");  
+			}  
+		}
 	}
 
 
