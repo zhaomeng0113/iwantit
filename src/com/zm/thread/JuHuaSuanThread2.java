@@ -14,15 +14,15 @@ import com.zm.utils.StringUtils;
 
 import net.spy.memcached.MemcachedClient;
 
-public class JuHuaSuanThread extends Thread{
+public class JuHuaSuanThread2 extends Thread{
 
 	public void run() {
-		Logger logger=Logger.getLogger(JuHuaSuanThread.class);
+		Logger logger=Logger.getLogger(JuHuaSuanThread2.class);
 		//获取memcached客户端
 		String juHuaSuan = null;
 		String url="";
 		try {
-			url="https://ju.taobao.com/json/jusp2/ajaxGetTpFloor.json?urlKey=other/qhb&floorIndex=" + floor + "&subFloorIndex="+subFloor+"&ext="+ext;
+			url="https://ju.taobao.com/json/jusp2/ajaxGetTpFloor.json?urlKey=other/99fb&floorIndex=" + floor + "&subFloorIndex="+subFloor+"&ext="+ext;
 			//logger.info(url);
 			juHuaSuan = HttpClientUtils.sendHttpsGet(url);
 		} catch (Exception e) {
@@ -51,7 +51,7 @@ public class JuHuaSuanThread extends Thread{
 			} catch (Exception e) {
 				logger.info("转换商品列表时出错");
 			}
-			if(floorTitle.get("name").toString().equals("热卖爆品")||floorTitle.get("name").toString().equals("热门爆款")||floorTitle.get("name").toString().equals("热门商品")) {
+			if(floorTitle.get("name").toString().equals("热销单品")||floorTitle.get("name").toString().equals("热门爆款")||floorTitle.get("name").toString().equals("热门商品")) {
 				if(!StringUtils.isEmpty(list)){
 					for (Object object : list) {
 						//转换当前商品对象为JsonObject
@@ -64,22 +64,22 @@ public class JuHuaSuanThread extends Thread{
 						String currentGoodsName = (String) ((JSONObject) currentData.get("name")).get("title");
 						//判断是否免单
 						if(currentGoodsPrice>=5){
-							if((currentGoodsName.contains("收纳")&&flowAct.getPerUserMoney()/100>=300)||currentGoodsName.contains("收纳博士")||flowAct.getPerUserMoney()/100>=currentGoodsPrice||(int)((int)currentGoodsPrice-flowAct.getPerUserMoney()/100)<=10){
+							if((currentGoodsName.contains("净水器")&&flowAct.getPerUserMoney()/100>=300)||currentGoodsName.contains("菲海伦")||flowAct.getPerUserMoney()/100>=currentGoodsPrice||(int)((int)currentGoodsPrice-flowAct.getPerUserMoney()/100)<=10){
 								logger.info("聚划算红包：【"+currentGoodsName+"】进入免单判断,红包状态为(false为有红包，true代表红包为空)"+flowAct.getEmpty());
 								if(!flowAct.getEmpty()){
 									Object mcVal = mc.get(flowAct.getFlowId()+"");
 									logger.info("memcached获取值："+mcVal);
 									if(!currentGoodsName.equals(mcVal)){
 										try {
-											if(currentGoodsName.contains("干发帽")||currentGoodsName.contains("凤全")||currentGoodsName.contains("艾乐果")||currentGoodsName.contains("练字神器")){
-												logger.info("忽略免单。。"+currentGoodsName);
+											if(currentGoodsName.contains("纱布浴巾")||currentGoodsName.contains("凤全")||currentGoodsName.contains("运动鞋")||currentGoodsName.contains("乔丹")){
+												logger.info("忽略免单。。");
 											}else{
 												logger.info("***********************开始短信发送****************************");
 												//"反撸"+(currentGoodsPrice-flowAct.getPerUserMoney()/100)
 												String sendMsg = MyInfo.sendMsg(currentGoodsName, flowAct.getFlowId()+"");
 												logger.info("短信发送状态为："+sendMsg);
 												logger.info("***********************开始邮件发送****************************");
-												String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>           http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
+												String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为："+flowAct.getClickUrl()+"'>去抢~</a>           http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
 												logger.info("邮件发送返回状态为:"+sendInfo);
 												//if(sendInfo.equals("success")){
 													mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
@@ -91,14 +91,12 @@ public class JuHuaSuanThread extends Thread{
 										}
 
 									}
-								}else{
-									mc.delete(flowAct.getFlowId()+"");
 								}
 							}
 						}
 					}
 				}
-			}else if(floorTitle.get("name").toString().equals("热卖品牌")||floorTitle.get("name").toString().equals("热门品牌")){
+			}else if(floorTitle.get("name").toString().equals("精选品牌")||floorTitle.get("name").toString().equals("热门品牌")){
 				if(!StringUtils.isEmpty(list)){
 					for (Object object : list) {
 						//转换当前商品对象为JsonObject
@@ -123,7 +121,7 @@ public class JuHuaSuanThread extends Thread{
 											logger.info("短信发送出错,reason："+e.getMessage());
 										}
 										logger.info("***********************开始邮件发送****************************");
-										String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>           http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
+										String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='"+flowAct.getClickUrl()+"'>去抢~</a>           http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
 										logger.info("邮件发送返回状态为:"+sendInfo);	
 										//if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
@@ -147,7 +145,7 @@ public class JuHuaSuanThread extends Thread{
 	private Integer subFloor;
 	private String ext;
 	private MemcachedClient mc;
-	public JuHuaSuanThread(Integer floor, Integer subFloor, String ext, MemcachedClient mc) {
+	public JuHuaSuanThread2(Integer floor, Integer subFloor, String ext, MemcachedClient mc) {
 		this.floor = floor;
 		this.subFloor = subFloor;
 		this.ext = ext;

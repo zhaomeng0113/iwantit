@@ -19,8 +19,8 @@ public class MyInfo {
 	
 	//邮件接收者（数组）
 	public static final String[] SENDTOARRAY={""};
-	//邮件接受者（String类型，以";"号分隔）
-	public static final String SENDTOSTRING="934752820@qq.com;543680244@qq.com;499014792@qq.com;cy3306@foxmail.com;527260578@qq.com;495887905@qq.com";
+	//邮件接受者（String类型，以";"号分隔）;543680244@qq.com;cy3306@foxmail.com;
+	public static final String SENDTOSTRING="543680244@qq.com;934752820@qq.com;527260578@qq.com";
 	public static final String MYMAILFORJUHUASUAN="";
 	public static final String MYMAILFORJUHUASUANPWD="";
 	public static final String MYMAILFORTAOQIANGGOU="";
@@ -63,7 +63,8 @@ public class MyInfo {
 		req.setSmsType("normal");
 		req.setSmsFreeSignName("ZM提醒");
 		req.setSmsParamString("{name:'免单',url:'"+url+"'}");
-		req.setRecNum("13261033656,15919550085,18662658756");
+		//,15919550085,18662658756
+		req.setRecNum("13261033656");
 		req.setSmsTemplateCode("SMS_12981741");
 		AlibabaAliqinFcSmsNumSendResponse rsp;
 		try {

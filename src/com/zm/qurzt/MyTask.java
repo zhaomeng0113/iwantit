@@ -38,15 +38,15 @@ public class MyTask extends TimerTask{
 		Date date = new Date();
 		int hours = date.getHours();
 		System.out.println(hours);
-		if(hours>=1&&hours<8){
+		if(hours>=2&&hours<8){
 
 		}else{
 			if (!isRunning) {  
 				MemcachedCilentUtil memcachedClient=new MemcachedCilentUtil();
 				MemcachedClient mc = memcachedClient.getClient();
 				for(int floor=1;floor<=15;floor++){
-					/*TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
-					taoQiangGouThread.start();*/
+					TaoQiangGouThread taoQiangGouThread=new TaoQiangGouThread(floor,mc);
+					taoQiangGouThread.start();
 					for(int subFloor=1;subFloor<=2;subFloor++){
 						for(int page=1;page<=2;page++){
 							JuHuaSuanThread j=new JuHuaSuanThread(floor, subFloor,"page%3A"+page,mc);

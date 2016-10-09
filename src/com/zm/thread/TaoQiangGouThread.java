@@ -57,23 +57,27 @@ public class TaoQiangGouThread extends Thread{
 					if(currentGoodsPrice>=5){
 						if(flowAct.getPerUserMoney()/100>=currentGoodsPrice||(currentGoodsPrice-flowAct.getPerUserMoney()/100)<=10){
 							logger.info("淘抢购红包：【"+currentGoodsName+"】进入免单判断,红包状态为(false为有红包，true代表红包为空)"+flowAct.getEmpty());
-							if(!flowAct.getEmpty()){
-								Object mcVal = mc.get(flowAct.getFlowId()+"");
-								logger.info("memcached获取值："+mcVal);
-								if(!currentGoodsName.equals(mcVal)){
-									try {
-										String sendMsg = MyInfo.sendMsg(currentGoodsName, flowAct.getFlowId()+"");
-										logger.info("短信发送状态为："+sendMsg);
-										logger.info("***********************开始邮件发送****************************");
-										String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>          http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
-										logger.info("邮件发送返回状态为:"+sendInfo);
-										//if(sendInfo.equals("success")){
+							if(currentGoodsName.contains("红豆薏米枸杞代餐粉")||currentGoodsName.contains("耐热玻璃")||currentGoodsName.contains("迷你超小")||currentGoodsName.contains("乔丹")){
+								logger.info("忽略免单。。"+currentGoodsName);
+							}else{
+								if(!flowAct.getEmpty()){
+									Object mcVal = mc.get(flowAct.getFlowId()+"");
+									logger.info("memcached获取值："+mcVal);
+									if(!currentGoodsName.equals(mcVal)){
+										try {
+											String sendMsg = MyInfo.sendMsg(currentGoodsName, flowAct.getFlowId()+"");
+											logger.info("短信发送状态为："+sendMsg);
+											logger.info("***********************开始邮件发送****************************");
+											String sendInfo = MyInfo.sendCloud(currentGoodsName, "欢迎使用，您的激活地址为：<a href='http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"'>去抢~</a>          http://i.5945i.com/flow/index.htm?id="+flowAct.getFlowId()+"");
+											logger.info("邮件发送返回状态为:"+sendInfo);
+											//if(sendInfo.equals("success")){
 											mc.set(flowAct.getFlowId()+"",1800,currentGoodsName);
-										//}
-									} catch (Exception e) {
-										logger.info("！！！！！！！！！！！！！！淘抢购邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
-									}
+											//}
+										} catch (Exception e) {
+											logger.info("！！！！！！！！！！！！！！淘抢购邮件发送出错，reason："+e.getMessage()+"!!!!!!!!!!!!!!!!!!");
+										}
 
+									}
 								}
 							}
 						}
@@ -82,7 +86,7 @@ public class TaoQiangGouThread extends Thread{
 			}
 		}
 	}
-	
+
 	public TaoQiangGouThread(Integer floor, MemcachedClient mc) {
 		this.floor = floor;
 		this.mc = mc;

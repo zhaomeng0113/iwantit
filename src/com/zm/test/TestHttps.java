@@ -96,6 +96,6 @@ public class TestHttps {
 		}
 	}
 	public static void main(String[] args) {
-		MyInfo.sendMsg("大飒飒范德萨发的是的撒啊大厦法定","测试邮件地方萨芬撒范德萨发发大水发大水发大水发大水发撒发顺丰","123132123");
+		//MyInfo.sendMsg("大飒飒范德萨发的是的撒啊大厦法定","测试邮件地方萨芬撒范德萨发发大水发大水发大水发大水发撒发顺丰","123132123");
 	}
 }
